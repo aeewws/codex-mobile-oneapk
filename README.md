@@ -13,6 +13,21 @@ Codex Mobile 是一个面向 Android 的 Codex 手机版，目标是把真实本
 
 快速入口：[项目说明](docs/project-brief.md) · [环境与安装](docs/setup.md) · [路线图](docs/roadmap.md) · [英文 README](README.en.md) · [贡献说明（英文）](CONTRIBUTING.md) · [安全说明（英文）](SECURITY.md)
 
+## 直接下载
+
+如果你只是想安装使用，而不是自己编译源码，请直接去 Releases 页面下载 APK：
+
+- [下载最新版本](https://github.com/aeewws/codex-mobile-oneapk/releases/latest)
+- 推荐下载 `codex-mobile-oneapk-oss-debug-arm64-v8a.apk`
+
+安装后的最短路径：
+
+1. 安装 APK
+2. 首次打开后允许所需权限
+3. 如果你的设备已经 root，可给 App root 授权以获得更稳的后台保活
+4. 在“命令”页点 `登录` 或 `设备码`
+5. 授权完成后开始使用
+
 ## 为什么做这个项目
 
 Codex 的终端工作流很强，但它并不是一个适合手机触摸使用的产品。Codex Mobile 想解决的不是“把终端搬上手机”，而是把本地 AI coding workflow 收成一个更像移动产品的体验。
@@ -90,7 +105,14 @@ graph TD
 
 ## 环境与运行预期
 
-当前预期环境：
+最终用户的直接使用预期：
+
+- Android 9+ 设备
+- `arm64-v8a`
+- 手机上可用浏览器
+- 可选 root；有 root 时保活和后台恢复更稳
+
+开发者构建环境：
 
 - Android 9+ 设备
 - `arm64-v8a`

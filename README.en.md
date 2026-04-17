@@ -13,6 +13,21 @@ This rebuild no longer depends on the Termux app itself. The APK embeds an arm64
 
 Quick links: [Project brief](docs/project-brief.en.md) · [Setup](docs/setup.en.md) · [Roadmap](docs/roadmap.en.md) · [Chinese README](README.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
+## Direct Download
+
+If you want to install and try the app without building from source, download the APK from Releases:
+
+- [Latest release](https://github.com/aeewws/codex-mobile-oneapk/releases/latest)
+- Recommended asset: `codex-mobile-oneapk-oss-debug-arm64-v8a.apk`
+
+Fastest path after install:
+
+1. Install the APK
+2. Allow the required runtime permissions on first launch
+3. If the device is rooted, grant root to improve keepalive and background recovery
+4. Open the command page and use `Login` or `Device Code`
+5. Start using Codex after auth completes
+
 ## Why This Exists
 
 The terminal workflow is powerful, but it is not a good mobile product. Codex Mobile is an attempt to make local AI coding usable on a real Android phone without pretending the terminal is the final UI.
@@ -90,7 +105,14 @@ graph TD
 
 ## Compatibility And Setup
 
-Current expected environment:
+Direct end-user expectations:
+
+- Android 9+ device
+- `arm64-v8a`
+- a usable browser on-device
+- optional root; root improves keepalive and background reliability
+
+Developer build environment:
 
 - Android 9+ device
 - `arm64-v8a`
