@@ -42,7 +42,7 @@ This repository contains the Android app project itself, but not:
 
 - the runtime is packaged into APK assets at build time, then unpacked into app-private storage on first launch
 - auth files, config, session index, and backend logs live under the app-private `CODEX_HOME`
-- the app expects the local websocket endpoint `ws://127.0.0.1:8765`
+- the app uses an app-managed local websocket endpoint to talk to the backend
 - root is not required for basic startup, but helps with Doze whitelist, background whitelist, and standby bucket hardening
 - if you use device-code auth, enable device-code login in your ChatGPT security settings first
 
@@ -61,5 +61,5 @@ This repository contains the Android app project itself, but not:
 - confirm the embedded runtime successfully unpacked on first launch
 - confirm the app can obtain root when testing keepalive
 - confirm login or device-code auth completed successfully
-- confirm the local app-server is listening on `8765`
+- confirm the local app-server is listening and reachable from the app
 - collect screenshots or logs before filing issues

@@ -42,7 +42,7 @@ Codex Mobile 当前面向 Android 9+ 的 `arm64-v8a` 设备，并通过构建时
 
 - runtime 在构建时被打进 APK 资源中，首次启动时再解压到 App 私有目录
 - 认证文件、配置、会话索引和 backend 日志都放在 App 私有 `CODEX_HOME`
-- 当前 App 预期本地 websocket 端点是 `ws://127.0.0.1:8765`
+- 当前 App 使用 App 内部管理的本地 websocket 端点与 backend 通信
 - root 不是运行前提，但可用于 Doze 白名单、后台白名单和 standby bucket 加固
 - 如果启用了设备码登录，需要先在 ChatGPT 安全设置里允许设备码授权
 
@@ -61,5 +61,5 @@ Codex Mobile 当前面向 Android 9+ 的 `arm64-v8a` 设备，并通过构建时
 - 确认首次启动后 runtime 已成功解压
 - 确认测试保活能力时，App 能拿到 root
 - 确认登录或设备码授权已经完成
-- 确认本地 app-server 能监听 `8765`
+- 确认本地 app-server 已成功监听并可被 App 连接
 - 提 issue 之前尽量先准备截图或日志

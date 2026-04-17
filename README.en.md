@@ -45,7 +45,7 @@ The project is focused on:
 - single APK: the app manages an embedded arm64 runtime instead of depending on an external Termux app
 - app-private state: auth, config, session index, and backend logs live under the app's private `CODEX_HOME`
 - in-app auth: browser OAuth, device-code login, and local logout are exposed in the command UI
-- app-managed backend: the app probes, starts, stops, and restarts `codex app-server --listen ws://127.0.0.1:8765`
+- app-managed backend: the app probes, starts, stops, and restarts the local `codex app-server`
 - root is optional: it is now mainly used for keepalive and hardening rather than basic runtime availability
 
 ## Current Status
@@ -87,7 +87,7 @@ graph TD
     A --> D[Auth Manager]
     A --> E[Backend Manager]
     D -->|ChatGPT OAuth / Device Code| F[OpenAI Auth]
-    E -->|launch / stop / probe| G[codex app-server<br>ws://127.0.0.1:8765]
+    E -->|launch / stop / probe| G[codex app-server<br>local websocket]
     G --> H[Codex CLI Runtime]
     E --> I[Optional Root Hardening]
 
