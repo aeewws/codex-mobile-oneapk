@@ -1,0 +1,94 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+concurrency:
+  group: android-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CODEX_MOBILE_KEYSTORE_B64: ${{ secrets.CODEX_MOBILE_KEYSTORE_B64 }}
+      CODEX_MOBILE_KEYSTORE_PASSWORD: ${{ secrets.CODEX_MOBILE_KEYSTORE_PASSWORD }}
+      CODEX_MOBILE_KEY_ALIAS: ${{ secrets.CODEX_MOBILE_KEY_ALIAS }}
+      CODEX_MOBILE_KEY_PASSWORD: ${{ secrets.CODEX_MOBILE_KEY_PASSWORD }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Ensure Gradle wrapper is executable
+        run: chmod +x ./gradlew
+
+      - name: Prepare shared signing keystore
+        if: ${{ env.CODEX_MOBILE_KEYSTORE_B64 != '' && env.CODEX_MOBILE_KEYSTORE_PASSWORD != '' && env.CODEX_MOBILE_KEY_ALIAS != '' && env.CODEX_MOBILE_KEY_PASSWORD != '' }}
+        shell: bash
+        run: |
+          keystore_path="$GITHUB_WORKSPACE/signing/phone-compat.keystore"
+          mkdir -p "$(dirname "$keystore_path")"
+          printf '%s' "$CODEX_MOBILE_KEYSTORE_B64" | base64 -d > "$keystore_path"
+          {
+            echo "CODEX_MOBILE_KEYSTORE_PATH=$keystore_path"
+            echo "CODEX_MOBILE_KEYSTORE_PASSWORD=$CODEX_MOBILE_KEYSTORE_PASSWORD"
+            echo "CODEX_MOBILE_KEY_ALIAS=$CODEX_MOBILE_KEY_ALIAS"
+            echo "CODEX_MOBILE_KEY_PASSWORD=$CODEX_MOBILE_KEY_PASSWORD"
+          } >> "$GITHUB_ENV"
+
+      - name: Report signing mode
+        shell: bash
+        run: |
+          if [ -n "${CODEX_MOBILE_KEYSTORE_PATH:-}" ] && [ -f "${CODEX_MOBILE_KEYSTORE_PATH:-}" ]; then
+            echo "Shared signing keystore is available."
+          else
+            echo "Shared signing secrets are unavailable; using default debug signing."
+          fi
+
+      - name: Run unit tests
+        run: ./gradlew --no-daemon testLegacyDebugUnitTest testOssDebugUnitTest
+
+      - name: Assemble phone-compatible debug APK
+        run: ./gradlew --no-daemon assembleLegacyDebug
+
+      - name: Assemble OSS debug APK
+        run: ./gradlew --no-daemon assembleOssDebug
+
+      - name: Upload phone-compatible debug APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-mobile-legacy-debug-apk
+          path: app/build/outputs/apk/legacy/debug/*.apk
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload OSS debug APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-mobile-oss-debug-apk
+          path: app/build/outputs/apk/oss/debug/*.apk
+          if-no-files-found: ignore
+          retention-days: 14

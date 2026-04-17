@@ -1,0 +1,70 @@
+name: 问题反馈
+description: 反馈一个可以复现的 Codex Mobile 问题。
+title: "[问题反馈]："
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        仓库目前以中文优先展示。若你更习惯英文，也可以直接用英文填写下面内容。
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题概述
+      description: 发生了什么？
+      placeholder: 用几句话说明这个问题。
+    validations:
+      required: true
+  - type: input
+    id: android_version
+    attributes:
+      label: Android 版本
+      placeholder: "例如：Android 14"
+    validations:
+      required: true
+  - type: input
+    id: device_model
+    attributes:
+      label: 设备型号
+      placeholder: "例如：Pixel 8"
+    validations:
+      required: true
+  - type: input
+    id: root_stack
+    attributes:
+      label: Root 方案
+      description: 如果相关，请说明 Magisk、KernelSU 或其他方案。
+      placeholder: "例如：Magisk 29.0"
+  - type: input
+    id: termux_version
+    attributes:
+      label: Termux 版本
+      placeholder: "例如：0.118.3"
+  - type: input
+    id: codex_package_version
+    attributes:
+      label: Termux 内的 Codex 包版本
+      placeholder: "例如：@mmmbuto/codex-cli-termux@latest"
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开 App
+        2. 连接后端
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+      placeholder: 你原本希望发生什么？
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志或截图
+      description: 如果方便，请贴出有帮助的日志，或者附上截图。
